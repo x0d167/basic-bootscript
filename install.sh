@@ -21,3 +21,11 @@ trap 'kill $KEEPALIVE_PID' EXIT
 # Start logging
 echo "Bootstrap started at $(date)" | tee -a "$LOG_FILE"
 
+
+# Execute staging
+$SCRIPT_DIR/000-staging.sh
+
+# Execute package installation
+$SCRIPT_DIR/001-package.sh
+
+echo "Bootstrap completed at $(date)" | tee -a "$LOG_FILE"
