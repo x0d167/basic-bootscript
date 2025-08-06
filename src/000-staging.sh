@@ -46,7 +46,7 @@ log "Pacman syncing complete"
 
 # ---------- 2. Initial packages ----------------------------------------------
 announce "Installing bootstrap packages: base-devel git, curl, wget, vi, vim, rustup, xdg-user-dirs"
-if ! sudo pacman -S --noconfirm --needed base-devel git curl wget vi vim rustup xdg-user-dirs 2>&1 | tee -a "$LOG_FILE"; then
+if ! sudo pacman -S --noconfirm --needed base-devel git curl wget vi vim xdg-user-dirs 2>&1 | tee -a "$LOG_FILE"; then
     echo "[!] Package installation failed." | tee -a "$LOG_FILE"
     exit 1
 fi
@@ -135,4 +135,6 @@ log "Loaded bootstrap environment variables"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 log "preferred Rust install complete"
 
+# for Paru fuckery
+sudo pacman -S rustup
 log "--- Staging complete ---"
