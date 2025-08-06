@@ -54,6 +54,10 @@ fi
 # ---------- 3. Set up user dirs ----------------------------------------------
 announce "Configuring XDG user directories"
 
+# 0.5. Set initial user-dirs
+mkdir -p "$HOME/.config"
+xdg-user-dirs-update 2>&1 | tee -a "$LOG_FILE"
+
 # 1. Make the various default directories if not already created
 
 for dir in "$HOME"/{dev,sync,.cache} "$HOME"/.local/{bin,share,state}; do
