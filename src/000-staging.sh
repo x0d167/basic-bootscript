@@ -29,7 +29,7 @@ log() {
 
 # ---------- 1. Staging ------------------------------------------------------
 
-announce "Begin initial pacman staging for bootstrap"
+announce "Begin initial staging for bootstrap"
 
 # First update the arch keyring and add reflector
 sudo pacman -Sy --noconfirm archlinux-keyring reflector 2>&1 | tee -a "$LOG_FILE"
@@ -104,7 +104,9 @@ export GOBIN="$GOPATH/bin"
 export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export FFMPEG_DATADIR="$XDG_CONFIG_HOME/ffmpeg"
-export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export RUFF_CACHE_DIR=$XDG_CACHE_HOME/ruff
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+export MANPAGER='nvim +Man!'
 
 # Minimal PATH
 export PATH="$HOME/.local/bin:$PATH"
