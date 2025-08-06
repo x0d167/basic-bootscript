@@ -126,4 +126,7 @@ fi
 source "$HOME/.bashrc.bootstrap"
 log "Loaded bootstrap environment variables"
 
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+log "preferred Rust install complete"
+
 log "--- Staging complete ---"
