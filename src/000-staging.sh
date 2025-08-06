@@ -54,32 +54,38 @@ fi
 # ---------- 3. Set up user dirs ----------------------------------------------
 announce "Configuring XDG user directories"
 
-# 0.5. Set initial user-dirs
+# 1. Run once to generate initial config file
 mkdir -p "$HOME/.config"
 xdg-user-dirs-update 2>&1 | tee -a "$LOG_FILE"
 
-# 1. Make the various default directories if not already created
-
-for dir in "$HOME"/{dev,sync,.cache} "$HOME"/.local/{bin,share,state}; do
-    [[ ! -d "$dir" ]] && mkdir -p "$dir" && log "Created directory: $dir"
+# 2. Remove default directories (if created)
+for dir in Desktop Downloads Templates Public Documents Music Pictures Videos; do
+    [[ -d "$HOME/$dir" ]] && rm -rf "$HOME/$dir" && log "Removed unwanted default dir: $HOME/$dir"
 done
 
-# 2. Write your preferred layout
+# 3. Write preferred layout
 cat > "$HOME/.config/user-dirs.dirs" <<EOF
 XDG_DESKTOP_DIR="\$HOME/archive/desktop"
 XDG_DOWNLOAD_DIR="\$HOME/tmp/downloads"
-XDG_TEMPLATES_DIR="\$HOME/archive/templates/"
-XDG_PUBLICSHARE_DIR="\$HOME/tmp/public/"
+XDG_TEMPLATES_DIR="\$HOME/archive/templates"
+XDG_PUBLICSHARE_DIR="\$HOME/tmp/public"
 XDG_DOCUMENTS_DIR="\$HOME/docs"
 XDG_MUSIC_DIR="\$HOME/media/music"
 XDG_PICTURES_DIR="\$HOME/media/pictures"
 XDG_VIDEOS_DIR="\$HOME/media/videos"
 EOF
 
-# 3. Generate any missing dirs
+# 4. Create those directories explicitly to prevent re-creation of defaults
+for dir in \
+  "$HOME/archive/desktop" "$HOME/tmp/downloads" "$HOME/archive/templates" \
+  "$HOME/tmp/public" "$HOME/docs" "$HOME/media/music" \
+  "$HOME/media/pictures" "$HOME/media/videos"; do
+    [[ ! -d "$dir" ]] && mkdir -p "$dir" && log "Created preferred user dir: $dir"
+done
+
+# 5. Run update again to register paths with the system
 xdg-user-dirs-update 2>&1 | tee -a "$LOG_FILE"
 
-# 4. Log it
 log "XDG user dirs configured and created."
 
 # ---------- 4. Minimal Bootstrap Bashrc --------------------------------------
